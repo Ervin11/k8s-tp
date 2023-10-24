@@ -1,0 +1,38 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/docker/mysql/data
+.idea/*
+###> symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+/public/uploads/
+!/public/uploads/images/.gitkeep
+/.php-cs-fixer.cache
+/tools/php-cs-fixer/vendor
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+
+/supervisord.log
+supervisord.log.*
+/supervisord.pid
+
+/.coverage-cache/
+
+/.run/
+###< symfony/framework-bundle ###

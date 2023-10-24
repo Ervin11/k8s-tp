@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: k8s-tp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: k8s-tp
+    template:
+        metadata:
+            labels:
+                app: k8s-tp
+        spec:
+            containers:
+                -   name: php
+                    image: ervindock/k8s-tp-php:1.0.0
+                    imagePullPolicy: Always
+                    ports:
+                        -   containerPort: 9000
+                    resources:
+                        limits:
+                            memory: 1000Mi
+                            cpu: 1000m
+                        requests:
+                            memory: 225Mi
+                            cpu: 300m
+                    volumeMounts:
+                        -   name: shared-public-files
+                            mountPath: /var/www/public
+                    env:
+                        -   name: DATABASE_URL
+                            value: mysql://root:fP8cz7Q63nV@k8s-tp-mysql-service:3306/app
+                    lifecycle:
+                        postStart:
+                            exec:
+                                command: [ "/bin/sh", "-c", "cp -r /app/public/. /var/www/public" ]
+
+                -   name: nginx
+                    image: ervindock/k8s-tp-nginx
+                    ports:
+                        -   containerPort: 80
+                    volumeMounts:
+                        -   name: shared-public-files
+                            mountPath: /var/www/public
+                        -   name: nginx-config
+                            mountPath: /etc/nginx/conf.d
+                            readOnly: true
+
+#                -   name: mysql
+#                    image: ervindock/k8s-tp-mysql
+#                    env:
+#                        -   name: MYSQL_ROOT_PASSWORD
+#                            value: fP8cz7Q63nV
+#                        -   name: MYSQL_DATABASE
+#                            value: app
+
+            volumes:
+                -   name: shared-public-files
+                    emptyDir: { }
+                -   name: nginx-config
+                    configMap:
+                        name: k8s-tp-nginx-config

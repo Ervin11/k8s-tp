@@ -1,0 +1,35 @@
+resources:
+    limits:
+        cpu: 2
+        memory: 1024Mi
+    requests:
+        cpu: 0.25
+        memory: 256Mi
+
+mysql:
+    name: "mysql"
+    image: "ervindock/k8s-tp-mysql"
+    port: 3306
+    env:
+        secret:
+            MYSQL_DATABASE:
+                name: "database-secret"
+                key: "database"
+            MYSQL_ROOT_PASSWORD:
+                name: "database-secret"
+                key: "password"
+
+nginx:
+    name: "nginx"
+    image: "ervindock/k8s-tp-nginx"
+    port: 80
+
+phpfpm:
+    name: "php-fpm"
+    image: "ervindock/k8s-tp-php"
+    port: 9000
+    env:
+        secret:
+            DATABASE_URL:
+                name: "database-secret"
+                key: "url"

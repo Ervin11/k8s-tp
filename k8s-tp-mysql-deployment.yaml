@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: k8s-tp-mysql
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: k8s-tp-mysql
+    template:
+        metadata:
+            labels:
+                app: k8s-tp-mysql
+        spec:
+            containers:
+                -   name: k8s-tp-mysql
+                    image: ervindock/k8s-tp-mysql
+                    env:
+                        -   name: MYSQL_ROOT_PASSWORD
+                            value: fP8cz7Q63nV
+                        -   name: MYSQL_DATABASE
+                            value: app
+                    volumeMounts:
+                        -   name: mysql-persistent-storage
+                            mountPath: /var/lib/mysql
+
+            volumes:
+                -   name: mysql-persistent-storage
+                    persistentVolumeClaim:
+                        claimName: k8s-tp-mysql-pvc
