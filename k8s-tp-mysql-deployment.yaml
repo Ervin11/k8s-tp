@@ -17,9 +17,15 @@ spec:
                     image: ervindock/k8s-tp-mysql
                     env:
                         -   name: MYSQL_ROOT_PASSWORD
-                            value: fP8cz7Q63nV
+                            valueFrom:
+                                secretKeyRef:
+                                    name: k8s-tp-mysql-secret
+                                    key: password
                         -   name: MYSQL_DATABASE
-                            value: app
+                            valueFrom:
+                                secretKeyRef:
+                                    name: k8s-tp-mysql-secret
+                                    key: database
                     volumeMounts:
                         -   name: mysql-persistent-storage
                             mountPath: /var/lib/mysql
